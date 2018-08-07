@@ -40,7 +40,7 @@ func serveHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func send(hub *Hub, w http.ResponseWriter, r *http.Request) {
-	hub.broadcast <- []byte("foo")
+	hub.broadcast <- []byte("from http")
 
 	w.Write([]byte("Message sent"))
 }
@@ -53,10 +53,21 @@ func main() {
 	hub := newHub()
 	go hub.run()
 
+	QueueInit()
+	defer QueueShutdown()
+
+	go QueueRun(hub)
+
 	http.HandleFunc("/", serveHome)
 
 	http.HandleFunc("/send", func(w http.ResponseWriter, r *http.Request) {
 		send(hub, w, r)
+	})
+
+	http.HandleFunc("/queue", func(w http.ResponseWriter, r *http.Request) {
+		QueueSend()
+
+		w.Write([]byte("Message sent to queue"))
 	})
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
