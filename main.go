@@ -53,6 +53,7 @@ func main() {
 	hub := newHub()
 	go hub.run()
 
+	StackInit()
 	QueueInit()
 	defer QueueShutdown()
 

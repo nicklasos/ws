@@ -57,6 +57,7 @@ func QueueRun(hub *Hub) {
 	for {
 		for d := range msgs {
 			log.Printf("Received a message: %s", d.Body)
+			StackPush(d.Body)
 			hub.broadcast <- d.Body
 		}
 	}
