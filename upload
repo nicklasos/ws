@@ -1,2 +1,3 @@
-scp websockets root@server:/var/www/websockets
-scp websockets.html root@server:/var/www/websockets.html
+scp websockets root@server:/var/www/websockets/websockets
+scp websockets.html root@server:/var/www/websockets/websockets.html
+scp .env.example root@server:/var/www/websockets/.env.example
