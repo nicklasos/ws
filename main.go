@@ -58,17 +58,19 @@ func main() {
 
 	go QueueRun(hub)
 
-	http.HandleFunc("/", serveHome)
+	if os.Getenv("DEBUG") == "true" {
+		http.HandleFunc("/", serveHome)
 
-	http.HandleFunc("/send", func(w http.ResponseWriter, r *http.Request) {
-		send(hub, w, r)
-	})
+		http.HandleFunc("/send", func(w http.ResponseWriter, r *http.Request) {
+			send(hub, w, r)
+		})
 
-	http.HandleFunc("/queue", func(w http.ResponseWriter, r *http.Request) {
-		QueueSend()
+		http.HandleFunc("/queue", func(w http.ResponseWriter, r *http.Request) {
+			QueueSend()
 
-		w.Write([]byte("Message sent to queue"))
-	})
+			w.Write([]byte("Message sent to queue"))
+		})
+	}
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)

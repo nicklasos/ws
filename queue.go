@@ -18,7 +18,7 @@ func failOnError(err error, msg string) {
 func QueueInit() {
 	var err error
 
-	Connection, err = amqp.Dial(os.Getenv("RABBITMQ"))
+	Connection, err = amqp.Dial(os.Getenv("RABBITMQ_DSN"))
 	failOnError(err, "Failed to connect to RabbitMQ")
 
 	Channel, err = Connection.Channel()
@@ -32,7 +32,7 @@ func QueueShutdown() {
 
 func QueueRun(hub *Hub) {
 	q, err := Channel.QueueDeclare(
-		os.Getenv("QUEUE_NAME"), // name
+		os.Getenv("RABBITMQ_QUEUE"), // name
 		false, // durable
 		false, // delete when unused
 		false, // exclusive
@@ -64,7 +64,7 @@ func QueueRun(hub *Hub) {
 
 func QueueSend() {
 	q, err := Channel.QueueDeclare(
-		os.Getenv("QUEUE_NAME"), // name
+		os.Getenv("RABBITMQ_QUEUE"), // name
 		false, // durable
 		false, // delete when unused
 		false, // exclusive
@@ -84,6 +84,6 @@ func QueueSend() {
 			Body:        []byte(body),
 		})
 
-	log.Printf(" [x] Sent %s", body)
+	log.Printf("Queue Sent %s", body)
 	failOnError(err, "Failed to publish a message")
 }
