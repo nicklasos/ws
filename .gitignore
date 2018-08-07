@@ -12,6 +12,9 @@
 *.out
 
 websockets
+ws
 gin-bin
 .idea/
 .env
+cf.key
+cf.crt
