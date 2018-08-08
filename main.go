@@ -50,6 +50,8 @@ func main() {
 		log.Fatal("Error on loading .env file")
 	}
 
+	log.Println("DEBUG", os.Getenv("DEBUG"))
+
 	hub := newHub()
 	go hub.run()
 

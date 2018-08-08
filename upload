@@ -1,7 +1,7 @@
-scp ws root@giveaway-ws:/var/www/websockets/ws
-scp websockets.html root@giveaway-ws:/var/www/websockets/websockets.html
-scp .env.example root@giveaway-ws:/var/www/websockets/.env.example
-#scp server.crt root@giveaway-ws:/var/www/websockets/server.crt
-#scp server.key root@giveaway-ws:/var/www/websockets/server.key
-#scp cf.crt root@giveaway-ws:/var/www/websockets/cf.crt
-#scp cf.key root@giveaway-ws:/var/www/websockets/cf.key
+scp ws root@server:/var/www/websockets/ws
+#scp worker.conf root@server:/var/www/websockets/worker.conf
+#scp restart root@server:/var/www/websockets/restart
+#scp websockets.html root@server:/var/www/websockets/websockets.html
+#scp .env.example root@server:/var/www/websockets/.env.example
+#scp server.crt root@server:/var/www/websockets/server.crt
+#scp server.key root@server:/var/www/websockets/server.key
