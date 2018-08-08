@@ -8,8 +8,6 @@ go get github.com/codegangsta/gin
 ```
 
 # Supervisor
-https://pkrai.wordpress.com/2016/06/19/laravel-queues-with-supervisor/
-
 ```
 sudo apt-get install supervisor
 vim .../worker.conf
