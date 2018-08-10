@@ -18,3 +18,4 @@ gin-bin
 .env
 cf.key
 cf.crt
+vendor/
