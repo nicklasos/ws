@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"encoding/json"
 	"github.com/joho/godotenv"
 )
 
@@ -14,6 +15,10 @@ var tmpl = template.Must(template.ParseFiles("websockets.html"))
 type TmplData struct {
 	Port   string
 	Schema string
+}
+
+type Stats struct {
+	Clients int `json:"clients"`
 }
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
@@ -74,6 +79,14 @@ func main() {
 			w.Write([]byte("Message sent to queue"))
 		})
 	}
+
+	http.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
+		stats := Stats{len(hub.clients)}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(stats)
+	})
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)
