@@ -1,1 +1,2 @@
-mv ws websockets
+cp ws websockets
+sudo supervisorctl restart ws-worker:*

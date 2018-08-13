@@ -16,7 +16,12 @@ upload-all: upload
 	@scp restart $(SERVER):/var/www/websockets/restart
 	@scp websockets.html $(SERVER):/var/www/websockets/websockets.html
 	@scp .env.example $(SERVER):/var/www/websockets/.env.example
-	@scp server.crt $(SERVER):/var/www/websockets/server.crt
-	@scp server.key $(SERVER):/var/www/websockets/server.key
+	@scp cf.crt $(SERVER):/var/www/websockets/server.crt
+	@scp cf.key $(SERVER):/var/www/websockets/server.key
+
+reload:
+	@cp ws websockets
+    @sudo supervisorctl restart ws-worker:*
 
 .PHONY: build
+
