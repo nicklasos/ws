@@ -50,6 +50,8 @@ type Client struct {
 
 	// Buffered channel of outbound messages.
 	send chan []byte
+
+	id string
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -131,7 +133,23 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256)}
+
+	keys, ok := r.URL.Query()["id"]
+
+	if !ok || len(keys[0]) < 1 {
+		log.Println("Url Param 'id' is missing")
+		return
+	}
+
+	id := keys[0]
+
+	client := &Client{
+		hub:  hub,
+		conn: conn,
+		send: make(chan []byte, 256),
+		id:   id,
+	}
+
 	client.hub.register <- client
 
 	// Allow collection of memory referenced by the caller by doing all work in

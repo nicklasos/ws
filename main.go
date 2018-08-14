@@ -19,6 +19,7 @@ type TmplData struct {
 
 type Stats struct {
 	Clients int `json:"clients"`
+	Users   int `json:"users"`
 }
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
@@ -78,10 +79,19 @@ func main() {
 
 			w.Write([]byte("Message sent to queue"))
 		})
+
+		http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("ok"))
+		})
 	}
 
 	http.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
-		stats := Stats{len(hub.clients)}
+		uniq := make(map[string]bool)
+		for client := range hub.clients {
+			uniq[client.id] = true
+		}
+
+		stats := Stats{len(hub.clients), len(uniq)}
 
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
