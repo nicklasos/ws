@@ -22,6 +22,19 @@ type Stats struct {
 	Users       int `json:"users"`
 }
 
+func stats(hub *Hub, w http.ResponseWriter) {
+	uniq := make(map[string]bool)
+	for client := range hub.clients {
+		uniq[client.id] = true
+	}
+
+	stats := Stats{len(hub.clients), len(uniq)}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(stats)
+}
+
 func serveHome(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		http.Error(w, "Not found", http.StatusNotFound)
@@ -76,7 +89,6 @@ func main() {
 
 		http.HandleFunc("/queue", func(w http.ResponseWriter, r *http.Request) {
 			QueueSend()
-
 			w.Write([]byte("Message sent to queue"))
 		})
 
@@ -86,16 +98,7 @@ func main() {
 	}
 
 	http.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
-		uniq := make(map[string]bool)
-		for client := range hub.clients {
-			uniq[client.id] = true
-		}
-
-		stats := Stats{len(hub.clients), len(uniq)}
-
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(stats)
+		stats(hub, w)
 	})
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
