@@ -18,8 +18,8 @@ type TmplData struct {
 }
 
 type Stats struct {
-	Clients int `json:"clients"`
-	Users   int `json:"users"`
+	Connections int `json:"connections"`
+	Users       int `json:"users"`
 }
 
 func serveHome(w http.ResponseWriter, r *http.Request) {

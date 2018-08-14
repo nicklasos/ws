@@ -1,2 +1,6 @@
-cp ws websockets
+rm ws_copy
+cp ws ws_copy
+rm websockets_copy
+cp websockets websockets_copy
+mv ws websockets
 sudo supervisorctl restart ws-worker:*
