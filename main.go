@@ -23,7 +23,7 @@ type Stats struct {
 	Users       int `json:"users"`
 	Users1min   int `json:"users_1min"`
 	Users5min   int `json:"users_5min"`
-	Users10min  int `json:"users_10min"`
+	Users15min  int `json:"users_15min"`
 }
 
 func stats(hub *Hub, w http.ResponseWriter) {

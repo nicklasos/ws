@@ -13,3 +13,15 @@ sudo supervisorctl reread
 sudo supervisorctl update
 sudo supervisorctl start ws-worker:*
 ```
+
+# Stats
+curl https://ws/stats
+```json
+{
+  "connections": 88,
+  "users": 77,
+  "users_1min": 44,
+  "users_5min": 77,
+  "users_15min": 77
+}
+```
