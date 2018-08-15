@@ -31,11 +31,11 @@ func stats(hub *Hub, w http.ResponseWriter) {
 
 	min1time := now - 60
 	min5time := now - 60*5
-	min10time := now - 60*10
+	min15time := now - 60*15
 
 	min1 := 0
 	min5 := 0
-	min10 := 0
+	min15 := 0
 
 	uniq := make(map[string]*Client)
 	for client := range hub.clients {
@@ -51,12 +51,12 @@ func stats(hub *Hub, w http.ResponseWriter) {
 			min5++
 		}
 
-		if c.time > min10time {
-			min10++
+		if c.time > min15time {
+			min15++
 		}
 	}
 
-	stats := Stats{len(hub.clients), len(uniq), min1, min5, min10}
+	stats := Stats{len(hub.clients), len(uniq), min1, min5, min15}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
