@@ -8,6 +8,7 @@ import (
 
 	"encoding/json"
 	"github.com/joho/godotenv"
+	"time"
 )
 
 var tmpl = template.Must(template.ParseFiles("websockets.html"))
@@ -20,15 +21,42 @@ type TmplData struct {
 type Stats struct {
 	Connections int `json:"connections"`
 	Users       int `json:"users"`
+	Users1min   int `json:"users_1min"`
+	Users5min   int `json:"users_5min"`
+	Users10min  int `json:"users_10min"`
 }
 
 func stats(hub *Hub, w http.ResponseWriter) {
-	uniq := make(map[string]bool)
+	now := time.Now().Unix()
+
+	min1time := now - 60
+	min5time := now - 60*5
+	min10time := now - 60*10
+
+	min1 := 0
+	min5 := 0
+	min10 := 0
+
+	uniq := make(map[string]*Client)
 	for client := range hub.clients {
-		uniq[client.id] = true
+		uniq[client.id] = client
 	}
 
-	stats := Stats{len(hub.clients), len(uniq)}
+	for _, c := range uniq {
+		if c.time > min1time {
+			min1++
+		}
+
+		if c.time > min5time {
+			min5++
+		}
+
+		if c.time > min10time {
+			min10++
+		}
+	}
+
+	stats := Stats{len(hub.clients), len(uniq), min1, min5, min10}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)

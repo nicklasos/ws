@@ -52,6 +52,8 @@ type Client struct {
 	send chan []byte
 
 	id string
+
+	time int64
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -148,6 +150,7 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		conn: conn,
 		send: make(chan []byte, 256),
 		id:   id,
+		time: time.Now().Unix(),
 	}
 
 	client.hub.register <- client
