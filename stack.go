@@ -41,3 +41,11 @@ func StackPush(value []byte) {
 		client.RPop(key)
 	}
 }
+
+func StackPutKeyValues(key string, value interface{}) {
+	err := client.Set(key, value, 0)
+	if err != nil {
+		log.Println("Error on putting key values to redis", err)
+		return
+	}
+}

@@ -14,6 +14,7 @@ func main() {
 	go hub.run()
 
 	StackInit()
+	OnlineInit(hub)
 	QueueInit()
 	defer QueueShutdown()
 

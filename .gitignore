@@ -19,3 +19,6 @@ gin-bin
 cf.key
 cf.crt
 vendor/
+
+cf-pff.crt
+cf-pff.key
