@@ -7,14 +7,13 @@ import (
 )
 
 func OnlineInit(hub *Hub) {
+	message := make([]interface{}, 2)
 	ticker := time.NewTicker(10 * time.Second)
 	quit := make(chan struct{})
 	go func() {
 		for {
 			select {
 			case <-ticker.C:
-
-				message := make([]interface{}, 2)
 
 				message[0] = "online"
 				users := GetStats(hub).Users

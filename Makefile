@@ -1,4 +1,5 @@
-SERVER=root@server
+#SERVER=root@giveaway-ws
+SERVER=root@pff-ws
 
 all: build upload
 
@@ -18,6 +19,8 @@ upload-all: upload
 	@scp .env.example $(SERVER):/var/www/websockets/.env.example
 	@scp server.crt $(SERVER):/var/www/websockets/server.crt
 	@scp server.key $(SERVER):/var/www/websockets/server.key
+#	@scp cf-pff.crt $(SERVER):/var/www/websockets/cf.crt
+#	@scp cf-pff.key $(SERVER):/var/www/websockets/cf.key
 
 reload:
 	@rm ws_copy
@@ -28,4 +31,3 @@ reload:
 	@sudo supervisorctl restart ws-worker:*
 
 .PHONY: build
-

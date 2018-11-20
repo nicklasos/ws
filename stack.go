@@ -43,7 +43,7 @@ func StackPush(value []byte) {
 }
 
 func StackPutKeyValues(key string, value interface{}) {
-	err := client.Set(key, value, 0)
+	err := client.Set(key, value, 0).Err()
 	if err != nil {
 		log.Println("Error on putting key values to redis", err)
 		return
