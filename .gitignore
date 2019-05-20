@@ -16,9 +16,15 @@ ws
 gin-bin
 .idea/
 .env
-cf.key
-cf.crt
 vendor/
 
-cf-pff.crt
-cf-pff.key
+.DS_Store
+
+certs/cf-pff.crt
+certs/cf-pff.key
+certs/cf.key
+certs/cf.crt
+certs/cf-cases.crt
+certs/cf-cases.key
+certs/cf-ge.key
+certs/cf-ge.crt

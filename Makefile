@@ -1,5 +1,7 @@
-#SERVER=root@giveaway-ws
-SERVER=root@pff-ws
+#SERVER=root@giveaway-on-cases-ws
+SERVER=root@giveaway-ws
+#SERVER=root@pff-ws
+#SERVER=root@ge-ws
 
 all: build upload
 
@@ -15,12 +17,11 @@ upload-all: upload
 	@echo "Uploading assets"
 	@scp worker.conf $(SERVER):/var/www/websockets/worker.conf
 	@scp restart $(SERVER):/var/www/websockets/restart
+	@scp Makefile $(SERVER):/var/www/websockets/Makefile
 	@scp websockets.html $(SERVER):/var/www/websockets/websockets.html
 	@scp .env.example $(SERVER):/var/www/websockets/.env.example
-	@scp server.crt $(SERVER):/var/www/websockets/server.crt
-	@scp server.key $(SERVER):/var/www/websockets/server.key
-#	@scp cf-pff.crt $(SERVER):/var/www/websockets/cf.crt
-#	@scp cf-pff.key $(SERVER):/var/www/websockets/cf.key
+	@scp certs/cf-ge.crt $(SERVER):/var/www/websockets/cf-ge.crt
+	@scp certs/cf-ge.crt $(SERVER):/var/www/websockets/cf-ge.key
 
 reload:
 	@rm ws_copy
