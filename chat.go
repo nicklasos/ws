@@ -11,6 +11,7 @@ type ChatMessage struct {
 	room        string
 	message     string
 	messageRaw  []byte
+	client      *Client
 }
 
 // ParseChatMessage parses raw json message from client
@@ -30,5 +31,5 @@ func ParseChatMessage(message []byte) (*ChatMessage, error) {
 		return nil, errors.New("Wrong message type for chat")
 	}
 
-	return &ChatMessage{data[0], data[1], data[2], message}, nil
+	return &ChatMessage{data[0], data[1], data[2], message, nil}, nil
 }

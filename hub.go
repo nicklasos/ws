@@ -51,10 +51,13 @@ func (h *Hub) run() {
 				h.send(client, message)
 			}
 		case chat := <-h.chat:
-			for client := range h.clients {
-				// Todo: optimize this
-				if inArray(chat.room, client.rooms) {
-					h.send(client, chat.messageRaw)
+			// Client can post only to his rooms
+			if inArray(chat.room, chat.client.rooms) {
+				for client := range h.clients {
+					// Todo: optimize this
+					if inArray(chat.room, client.rooms) {
+						h.send(client, chat.messageRaw)
+					}
 				}
 			}
 		}

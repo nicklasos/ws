@@ -98,6 +98,8 @@ func (c *Client) readPump() {
 			break
 		}
 
+		chatMsg.client = c
+
 		c.hub.chat <- chatMsg
 	}
 }
