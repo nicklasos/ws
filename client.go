@@ -1,11 +1,8 @@
-// Copyright 2013 The Gorilla WebSocket Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
-
 package main
 
 import (
 	"bytes"
+	"errors"
 	"log"
 	"net/http"
 	"time"
@@ -25,6 +22,9 @@ const (
 
 	// Maximum message size allowed from peer.
 	maxMessageSize = 512
+
+	// Limit rooms that users can join per connection
+	maxRooms = 2
 )
 
 var (
@@ -48,12 +48,23 @@ type Client struct {
 	// The websocket connection.
 	conn *websocket.Conn
 
-	// Buffered channel of outbound messages.
-	send chan []byte
+	// Join time
+	time int64
 
+	// User id
 	id string
 
-	time int64
+	// Join rooms
+	rooms []string
+
+	// Buffered channel of outbound messages.
+	send chan []byte
+}
+
+// InitParams is params from client (browser, etc)
+type InitParams struct {
+	id    string
+	rooms []string
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -78,7 +89,16 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		//c.hub.broadcast <- message
+
+		log.Println("Message from client: ", string(message))
+
+		chatMsg, err := ParseChatMessage(message)
+		if err != nil {
+			log.Println("Error on parsing chat message from client", err)
+			break
+		}
+
+		c.hub.chat <- chatMsg
 	}
 }
 
@@ -128,6 +148,20 @@ func (c *Client) writePump() {
 	}
 }
 
+func parseInitParams(values map[string][]string) (*InitParams, error) {
+	id, ok := values["id"]
+	if !ok || len(id[0]) < 1 {
+		return nil, errors.New("Param id is missing")
+	}
+
+	rooms, _ := values["rooms"]
+	if len(rooms) > maxRooms {
+		return nil, errors.New("Param rooms is out of limit")
+	}
+
+	return &InitParams{id[0], rooms}, nil
+}
+
 // serveWs handles websocket requests from the peer.
 func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
@@ -136,27 +170,26 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	keys, ok := r.URL.Query()["id"]
-
-	if !ok || len(keys[0]) < 1 {
-		log.Println("Url Param 'id' is missing")
+	initParams, err := parseInitParams(r.URL.Query())
+	if err != nil {
+		log.Println(err)
 		return
 	}
 
-	id := keys[0]
+	// log.Println("Initial params", initParams)
 
 	client := &Client{
-		hub:  hub,
-		conn: conn,
-		send: make(chan []byte, 256),
-		id:   id,
-		time: time.Now().Unix(),
+		hub:   hub,
+		conn:  conn,
+		time:  time.Now().Unix(),
+		id:    initParams.id,
+		rooms: initParams.rooms,
+		send:  make(chan []byte, 256),
 	}
 
 	client.hub.register <- client
 
-	// Allow collection of memory referenced by the caller by doing all work in
-	// new goroutines.
+	// Allow collection of memory referenced by the caller by doing all work in new goroutines.
 	go client.writePump()
 	go client.readPump()
 }

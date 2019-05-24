@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// OnlineInit runs infinit loop to send online users count to all clients
 func OnlineInit(hub *Hub) {
 	message := make([]interface{}, 2)
 	ticker := time.NewTicker(10 * time.Second)
