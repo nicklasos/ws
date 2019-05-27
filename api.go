@@ -52,7 +52,7 @@ func serveHTTP(hub *Hub) {
 	}
 
 	http.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
-		Stats(hub, w)
+		stats(hub, w)
 	})
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {

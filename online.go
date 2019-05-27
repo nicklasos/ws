@@ -17,7 +17,7 @@ func onlineInit(hub *Hub) {
 			case <-ticker.C:
 
 				message[0] = "online"
-				users := GetStats(hub).Users
+				users := getStats(hub).Users
 				message[1] = users
 
 				stackPutKeyValues("ws.online", users)

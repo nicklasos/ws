@@ -14,7 +14,7 @@ type Data struct {
 	Users15min  int `json:"users_15min"`
 }
 
-func GetStats(hub *Hub) *Data {
+func getStats(hub *Hub) *Data {
 	now := time.Now().Unix()
 
 	min1time := now - 60
@@ -47,10 +47,10 @@ func GetStats(hub *Hub) *Data {
 	return &Data{len(hub.clients), len(uniq), min1, min5, min15}
 }
 
-func Stats(hub *Hub, w http.ResponseWriter) {
-	stats := GetStats(hub)
+func stats(hub *Hub, w http.ResponseWriter) {
+	s := getStats(hub)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(stats)
+	json.NewEncoder(w).Encode(s)
 }
