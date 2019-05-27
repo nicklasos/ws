@@ -18,8 +18,7 @@ func stackInit() {
 		DB:       0,
 	})
 
-	_, err := redisClient.Ping().Result()
-	if err != nil {
+	if _, err := redisClient.Ping().Result(); err != nil {
 		log.Fatal("Error on starting redis", err)
 	}
 }
@@ -42,8 +41,7 @@ func stackPush(key string, cap int64, value []byte) {
 }
 
 func stackPutKeyValues(key string, value interface{}) {
-	err := redisClient.Set(key, value, 0).Err()
-	if err != nil {
+	if err := redisClient.Set(key, value, 0).Err(); err != nil {
 		log.Println("Error on putting key values to redis", err)
 		return
 	}
