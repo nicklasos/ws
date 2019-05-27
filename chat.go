@@ -15,8 +15,8 @@ type ChatMessage struct {
 	client      *Client
 }
 
-// ParseChatMessage parses raw json message from client
-func ParseChatMessage(client *Client, message []byte) (*ChatMessage, error) {
+// parseChatMessage parses raw json message from client
+func parseChatMessage(client *Client, message []byte) (*ChatMessage, error) {
 	var data []string
 
 	err := json.Unmarshal(message, &data)
@@ -35,6 +35,6 @@ func ParseChatMessage(client *Client, message []byte) (*ChatMessage, error) {
 	return &ChatMessage{data[0], data[1], data[2], message, client}, nil
 }
 
-func LogChatMessage(msg *ChatMessage) {
-	StackPush(fmt.Sprintf("%s.%s", msg.messageType, msg.room), 30, msg.messageRaw)
+func logChatMessage(msg *ChatMessage) {
+	stackPush(fmt.Sprintf("%s.%s", msg.messageType, msg.room), 30, msg.messageRaw)
 }

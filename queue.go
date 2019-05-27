@@ -16,7 +16,7 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func QueueInit() {
+func queueInit() {
 	var err error
 
 	Connection, err = amqp.Dial(os.Getenv("RABBITMQ_DSN"))
@@ -26,12 +26,12 @@ func QueueInit() {
 	failOnError(err, "Failed to open a channel")
 }
 
-func QueueShutdown() {
+func queueShutdown() {
 	Channel.Close()
 	Connection.Close()
 }
 
-func QueueRun(hub *Hub) {
+func queueRun(hub *Hub) {
 	q, err := Channel.QueueDeclare(
 		os.Getenv("RABBITMQ_QUEUE"), // name
 		false, // durable
@@ -57,13 +57,13 @@ func QueueRun(hub *Hub) {
 
 	for {
 		for d := range msgs {
-			StackPush("ws.stack", 10, d.Body)
+			stackPush("ws.stack", 10, d.Body)
 			hub.broadcast <- d.Body
 		}
 	}
 }
 
-func QueueSend() {
+func queueSend() {
 	q, err := Channel.QueueDeclare(
 		os.Getenv("RABBITMQ_QUEUE"), // name
 		false, // durable

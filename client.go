@@ -90,15 +90,15 @@ func (c *Client) readPump() {
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
 
-		log.Println("Message from client: ", string(message))
+		// log.Println("Message from client: ", string(message))
 
-		chatMsg, err := ParseChatMessage(c, message)
+		chatMsg, err := parseChatMessage(c, message)
 		if err != nil {
 			log.Println("Error on parsing chat message from client", err)
 			break
 		}
 
-		LogChatMessage(chatMsg)
+		logChatMessage(chatMsg)
 
 		c.hub.chat <- chatMsg
 	}

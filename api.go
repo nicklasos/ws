@@ -33,7 +33,7 @@ func send(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Message sent"))
 }
 
-func ServeHTTP(hub *Hub) {
+func serveHTTP(hub *Hub) {
 	if os.Getenv("DEBUG") == "true" {
 		http.HandleFunc("/", serveHome)
 
@@ -42,7 +42,7 @@ func ServeHTTP(hub *Hub) {
 		})
 
 		http.HandleFunc("/queue", func(w http.ResponseWriter, r *http.Request) {
-			QueueSend()
+			queueSend()
 			w.Write([]byte("Message sent to queue"))
 		})
 

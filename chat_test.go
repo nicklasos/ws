@@ -5,7 +5,9 @@ import (
 )
 
 func TestParseMessage(t *testing.T) {
-	msg, err := ParseChatMessage([]byte("[\"chat\", \"room\", \"message text\"]"))
+	client := &Client{}
+
+	msg, err := parseChatMessage(client, []byte("[\"chat\", \"room\", \"message text\"]"))
 
 	if err != nil {
 		t.Fatal("Error on parse message")

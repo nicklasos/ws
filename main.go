@@ -14,12 +14,12 @@ func main() {
 	hub := newHub()
 	go hub.run()
 
-	StackInit()
-	OnlineInit(hub)
-	QueueInit()
-	defer QueueShutdown()
+	stackInit()
+	onlineInit(hub)
+	queueInit()
+	defer queueShutdown()
 
-	go QueueRun(hub)
+	go queueRun(hub)
 
-	ServeHTTP(hub)
+	serveHTTP(hub)
 }
