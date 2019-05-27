@@ -92,13 +92,13 @@ func (c *Client) readPump() {
 
 		log.Println("Message from client: ", string(message))
 
-		chatMsg, err := ParseChatMessage(message)
+		chatMsg, err := ParseChatMessage(c, message)
 		if err != nil {
 			log.Println("Error on parsing chat message from client", err)
 			break
 		}
 
-		chatMsg.client = c
+		LogChatMessage(chatMsg)
 
 		c.hub.chat <- chatMsg
 	}

@@ -1,14 +1,13 @@
 package main
 
 import (
-	"github.com/go-redis/redis"
 	"log"
 	"os"
+
+	"github.com/go-redis/redis"
 )
 
 var client *redis.Client
-
-const key = "ws.stack"
 
 func StackInit() {
 	log.Println("Start redis")
@@ -25,7 +24,7 @@ func StackInit() {
 	}
 }
 
-func StackPush(value []byte) {
+func StackPush(key string, cap int64, value []byte) {
 	if err := client.LPush(key, value).Err(); err != nil {
 		log.Println("Error push to stack", err)
 		return
@@ -37,7 +36,7 @@ func StackPush(value []byte) {
 		return
 	}
 
-	if stackLen > 10 {
+	if stackLen > cap {
 		client.RPop(key)
 	}
 }

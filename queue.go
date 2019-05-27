@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/streadway/amqp"
 	"log"
 	"os"
+
+	"github.com/streadway/amqp"
 )
 
 var Connection *amqp.Connection
@@ -56,7 +57,7 @@ func QueueRun(hub *Hub) {
 
 	for {
 		for d := range msgs {
-			StackPush(d.Body)
+			StackPush("ws.stack", 10, d.Body)
 			hub.broadcast <- d.Body
 		}
 	}
