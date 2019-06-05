@@ -35,12 +35,12 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:68140111bba1e9ec618f03b494eea66bfdf878334d71ac4b726b53224e573e97"
+  digest = "1:61ea64ea85bca606501bd4372950258aeb6dca521262bc32e211a57d736414c5"
   name = "github.com/nicklasos/golimiter"
   packages = ["."]
   pruneopts = "UT"
-  revision = "a1b160764f853a622149020354a1c299aff225bf"
-  version = "0.0.1"
+  revision = "5ab6158fbd4c84dc648a0c6f00de2741fa4ee017"
+  version = "0.0.3"
 
 [[projects]]
   branch = "master"

@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -110,7 +109,13 @@ func (c *Client) readPump() {
 			break
 		}
 
-		if !idLimit.Allow(c.id) || !ipLimit.Allow(c.ip) {
+		if !idLimit.Allow(c.id) {
+			idLimit.Ban(c.id, time.Minute*60)
+			c.hub.unregister <- c
+			break
+		}
+		if !ipLimit.Allow(c.ip) {
+			ipLimit.Ban(c.ip, time.Minute*30)
 			c.hub.unregister <- c
 			break
 		}
@@ -183,13 +188,21 @@ func parseInitParams(values map[string][]string) (*InitParams, error) {
 
 // serveWs handles websocket requests from the peer.
 func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
+	initParams, err := parseInitParams(r.URL.Query())
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	initParams, err := parseInitParams(r.URL.Query())
+	ip := realip.FromRequest(r)
+
+	if ipLimit.IsBanned(ip) || idLimit.IsBanned(initParams.id) {
+		w.WriteHeader(http.StatusTooManyRequests)
+		w.Write([]byte("429 - Too many requests"))
+		return
+	}
+
+	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println(err)
 		return
@@ -206,8 +219,6 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		rooms: initParams.rooms,
 		send:  make(chan []byte, 256),
 	}
-
-	fmt.Println(client)
 
 	client.hub.register <- client
 

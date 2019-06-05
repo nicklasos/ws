@@ -9,7 +9,7 @@
 </head>
 <body>
 <input id="input" type="text" />
-<button onclick="send()">Send</button>
+<button onclick="send()" id="send">Send</button>
 
 <pre id="output"></pre>
 
@@ -32,6 +32,14 @@
         socket.send(JSON.stringify(msg));
         input.value = "";
     }
+
+    var input = document.getElementById("input");
+    input.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("send").click();
+    }
+    });
 </script>
 </body>
 </html>
