@@ -13,6 +13,7 @@ type Data struct {
 	Users5min   int            `json:"users_5min"`
 	Users15min  int            `json:"users_15min"`
 	Rooms       map[string]int `json:"rooms"`
+	Version     string         `json:"version"`
 }
 
 func getStats(hub *Hub) *Data {
@@ -62,6 +63,7 @@ func getStats(hub *Hub) *Data {
 		min5,
 		min15,
 		rooms,
+		version,
 	}
 }
 
