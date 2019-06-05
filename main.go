@@ -15,10 +15,10 @@ func main() {
 	go hub.run()
 
 	stackInit()
-	onlineInit(hub)
 	queueInit()
 	defer queueShutdown()
 
+	go onlineInit(hub)
 	go queueRun(hub)
 
 	serveHTTP(hub)

@@ -7,12 +7,20 @@
   version = "1.2.0"
 
 [[constraint]]
+  name = "github.com/nicklasos/golimiter"
+  version = "0.0.1"
+
+[[constraint]]
   name = "github.com/joho/godotenv"
   version = "1.2.0"
 
 [[constraint]]
   branch = "master"
   name = "github.com/streadway/amqp"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/tomasen/realip"
 
 [prune]
   go-tests = true

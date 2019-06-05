@@ -3,11 +3,20 @@ package main
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
 
+	"github.com/tomasen/realip"
+
 	"github.com/gorilla/websocket"
+	"github.com/nicklasos/golimiter"
+)
+
+var (
+	ipLimit = golimiter.NewLimiter(15, 2)
+	idLimit = golimiter.NewLimiter(5, 2)
 )
 
 const (
@@ -54,6 +63,9 @@ type Client struct {
 	// User id
 	id string
 
+	// User ip
+	ip string
+
 	// Join rooms
 	rooms []string
 
@@ -95,6 +107,11 @@ func (c *Client) readPump() {
 		chatMsg, err := parseChatMessage(c, message)
 		if err != nil {
 			log.Println("Error on parsing chat message from client", err)
+			break
+		}
+
+		if !idLimit.Allow(c.id) || !ipLimit.Allow(c.ip) {
+			c.hub.unregister <- c
 			break
 		}
 
@@ -185,9 +202,12 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		conn:  conn,
 		time:  time.Now().Unix(),
 		id:    initParams.id,
+		ip:    realip.FromRequest(r),
 		rooms: initParams.rooms,
 		send:  make(chan []byte, 256),
 	}
+
+	fmt.Println(client)
 
 	client.hub.register <- client
 

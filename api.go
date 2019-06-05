@@ -62,13 +62,13 @@ func serveHTTP(hub *Hub) {
 	address := os.Getenv("DOMAIN") + ":" + os.Getenv("PORT")
 
 	if os.Getenv("USE_SSL") == "true" {
-		log.Println("Start server https")
+		log.Println("Start https server on port: ", address)
 
 		if err := http.ListenAndServeTLS(address, "server.crt", "server.key", nil); err != nil {
 			log.Fatal("ListenAndServe: ", err)
 		}
 	} else {
-		log.Println("Start server http")
+		log.Println("Start http server on port: ", address)
 
 		if err := http.ListenAndServe(address, nil); err != nil {
 			log.Fatal("ListenAndServe: ", err)

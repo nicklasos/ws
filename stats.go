@@ -56,12 +56,12 @@ func getStats(hub *Hub) *Data {
 	}
 
 	return &Data{
-		Connections: len(hub.clients),
-		Users:       len(uniq),
-		Users1min:   min1,
-		Users5min:   min5,
-		Users15min:  min15,
-		Rooms:       rooms,
+		len(hub.clients),
+		len(uniq),
+		min1,
+		min5,
+		min15,
+		rooms,
 	}
 }
 

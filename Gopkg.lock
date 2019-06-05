@@ -35,12 +35,36 @@
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:68140111bba1e9ec618f03b494eea66bfdf878334d71ac4b726b53224e573e97"
+  name = "github.com/nicklasos/golimiter"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a1b160764f853a622149020354a1c299aff225bf"
+  version = "0.0.1"
+
+[[projects]]
   branch = "master"
   digest = "1:0c088044c1c1ee83e723692442df4fec9b3f2e57f7a99773485c97adfbc31695"
   name = "github.com/streadway/amqp"
   packages = ["."]
   pruneopts = "UT"
   revision = "70e15c650864f4fc47f5d3c82ea117285480895d"
+
+[[projects]]
+  branch = "master"
+  digest = "1:30d7b01d02b2705c10274b5110968918c9e3a5a52dae90b40463f6923becd52a"
+  name = "github.com/tomasen/realip"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "f0c99a92ddcedd3964a269d23c8e89d9a9229be6"
+
+[[projects]]
+  branch = "master"
+  digest = "1:9fdc2b55e8e0fafe4b41884091e51e77344f7dc511c5acedcfd98200003bff90"
+  name = "golang.org/x/time"
+  packages = ["rate"]
+  pruneopts = "UT"
+  revision = "9d24e82272b4f38b78bc8cff74fa936d31ccd8ef"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -49,7 +73,9 @@
     "github.com/go-redis/redis",
     "github.com/gorilla/websocket",
     "github.com/joho/godotenv",
+    "github.com/nicklasos/golimiter",
     "github.com/streadway/amqp",
+    "github.com/tomasen/realip",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
