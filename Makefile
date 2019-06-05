@@ -9,7 +9,7 @@ build:
 	@echo "Building"
 	@env GOOS=linux GOARCH=amd64 go build -v github.com/nicklasos/ws
 
-upload:
+upload: build
 	@echo "Uploading"
 	@scp ws $(SERVER):/var/www/websockets/ws
 
