@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
+	"time"
 )
 
 // ChatMessage is parsed json from client
@@ -37,4 +39,43 @@ func parseChatMessage(client *Client, message []byte) (*ChatMessage, error) {
 
 func logChatMessage(msg *ChatMessage) {
 	stackPush(fmt.Sprintf("%s.%s", msg.messageType, msg.room), 30, msg.messageRaw)
+	incrementKey(fmt.Sprintf("%s.%s", "messages.count", msg.room))
+	setAdd(fmt.Sprintf("%s.%s", "messages.writers", msg.room), msg.client.id)
+}
+
+type ChatRoomStats struct {
+	messages int64
+	writets  int64
+}
+
+func runClearStats() {
+	for {
+		time.Sleep(time.Hour * 24 * 10)
+		logClearStats()
+	}
+}
+
+func logClearStats() {
+	keys := getKeys("messages.writers.*")
+	countKeys := getKeys("messages.count.*")
+
+	for _, countKey := range countKeys {
+		keys = append(keys, countKey)
+	}
+
+	for _, key := range keys {
+		keyDel(key)
+	}
+}
+
+func logGetStats(room string) *ChatRoomStats {
+	writets := setCount(fmt.Sprintf("%s.%s", "messages.writers", room))
+	msgStr := getKey(fmt.Sprintf("%s.%s", "messages.count", room))
+
+	msgCnt, err := strconv.ParseInt(msgStr, 10, 64)
+	if err != nil {
+		msgCnt = 0
+	}
+
+	return &ChatRoomStats{msgCnt, writets}
 }

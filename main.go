@@ -20,6 +20,7 @@ func main() {
 
 	go onlineInit(hub)
 	go queueRun(hub)
+	go runClearStats()
 
 	serveHTTP(hub)
 }

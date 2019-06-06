@@ -6,14 +6,23 @@ import (
 	"time"
 )
 
+type Rooms = map[string]*RoomStats
+
 type Data struct {
-	Connections int            `json:"connections"`
-	Users       int            `json:"users"`
-	Users1min   int            `json:"users_1min"`
-	Users5min   int            `json:"users_5min"`
-	Users15min  int            `json:"users_15min"`
-	Rooms       map[string]int `json:"rooms"`
-	Version     string         `json:"version"`
+	Connections int    `json:"connections"`
+	Users       int    `json:"users"`
+	Users1min   int    `json:"users_1min"`
+	Users5min   int    `json:"users_5min"`
+	Users15min  int    `json:"users_15min"`
+	Rooms       Rooms  `json:"rooms"`
+	Version     string `json:"version"`
+	UptimeFrom  string `json:"uptime_from"`
+}
+
+type RoomStats struct {
+	Online   int64 `json:"online"`
+	Writers  int64 `json:"writers"`
+	Messages int64 `json:"messages"`
 }
 
 func getStats(hub *Hub) *Data {
@@ -32,7 +41,7 @@ func getStats(hub *Hub) *Data {
 		uniq[client.id] = client
 	}
 
-	rooms := make(map[string]int)
+	rooms := make(Rooms)
 
 	for _, c := range uniq {
 		if c.time > min1time {
@@ -49,9 +58,10 @@ func getStats(hub *Hub) *Data {
 
 		for _, room := range c.rooms {
 			if _, ok := rooms[room]; ok {
-				rooms[room]++
+				rooms[room].Online++
 			} else {
-				rooms[room] = 1
+				r := logGetStats(room)
+				rooms[room] = &RoomStats{1, r.writets, r.messages}
 			}
 		}
 	}
@@ -64,6 +74,7 @@ func getStats(hub *Hub) *Data {
 		min15,
 		rooms,
 		version,
+		uptime.Format("2006-01-02 15:04:05"),
 	}
 }
 

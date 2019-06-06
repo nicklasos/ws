@@ -14,8 +14,11 @@ import (
 )
 
 var (
-	ipLimit = golimiter.NewLimiter(15, 2)
-	idLimit = golimiter.NewLimiter(5, 2)
+	ipLimit = golimiter.NewLimiter(5, 5)
+	idLimit = golimiter.NewLimiter(2, 3)
+
+	banIpTime = 30 * time.Minute
+	banIdTime = 20 * time.Minute
 )
 
 const (
@@ -110,12 +113,12 @@ func (c *Client) readPump() {
 		}
 
 		if !idLimit.Allow(c.id) {
-			idLimit.Ban(c.id, time.Minute*60)
+			idLimit.Ban(c.id, banIdTime)
 			c.hub.unregister <- c
 			break
 		}
 		if !ipLimit.Allow(c.ip) {
-			ipLimit.Ban(c.ip, time.Minute*30)
+			ipLimit.Ban(c.ip, banIpTime)
 			c.hub.unregister <- c
 			break
 		}

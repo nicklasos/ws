@@ -1,5 +1,5 @@
-#SERVER=root@giveaway-on-cases-ws
 SERVER=root@giveaway-ws
+#SERVER=root@giveaway-on-cases-ws
 #SERVER=root@pff-ws
 #SERVER=root@ge-ws
 
