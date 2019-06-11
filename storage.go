@@ -76,6 +76,7 @@ func getKey(key string) string {
 	if err == redis.Nil {
 		return ""
 	} else if err != nil {
+		log.Println("Error on get key", err)
 		return ""
 	}
 

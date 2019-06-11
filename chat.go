@@ -50,7 +50,7 @@ type ChatRoomStats struct {
 
 func runClearStats() {
 	for {
-		time.Sleep(time.Hour * 24 * 10)
+		time.Sleep(time.Hour * 24 * 30)
 		logClearStats()
 	}
 }
