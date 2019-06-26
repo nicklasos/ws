@@ -112,6 +112,12 @@ func (c *Client) readPump() {
 			break
 		}
 
+		if isSpam(chatMsg.message) {
+			ipLimit.Ban(c.ip, banIpTime)
+			c.hub.unregister <- c
+			break
+		}
+
 		if !idLimit.Allow(c.id) {
 			idLimit.Ban(c.id, banIdTime)
 			c.hub.unregister <- c
