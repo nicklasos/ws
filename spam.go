@@ -19,8 +19,7 @@ func isSpam(str string) bool {
 		if os.Getenv("SPAM_LINKS_EXCLUDE") != "" {
 			exclude := rEx.FindAllString(str, -1)
 
-			// Not spam if there only one link
-			// and it's link is in SPAM_LINKS_EXCLUDE param
+			// Do not exclude if there more than one link
 			if len(exclude) != 0 && len(founded) == 1 {
 				return false
 			}
