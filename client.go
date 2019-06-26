@@ -13,8 +13,15 @@ import (
 )
 
 var (
-	ipLimit = golimit.NewLimiter(1*time.Minute, 40)
-	idLimit = golimit.NewLimiter(1*time.Minute, 30)
+	ipLimit = golimit.NewGroupLimiter(
+		golimit.NewLimiter(1*time.Second, 4),
+		golimit.NewLimiter(1*time.Minute, 60),
+	)
+
+	idLimit = golimit.NewGroupLimiter(
+		golimit.NewLimiter(1*time.Second, 2),
+		golimit.NewLimiter(1*time.Minute, 30),
+	)
 
 	banIpTime = 40 * time.Minute
 	banIdTime = 30 * time.Minute
