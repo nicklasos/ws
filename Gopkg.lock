@@ -35,12 +35,12 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:61ea64ea85bca606501bd4372950258aeb6dca521262bc32e211a57d736414c5"
-  name = "github.com/nicklasos/golimiter"
+  digest = "1:12a08dda96fb1e89a1511ad844e7130c10513a595d4d32dab11c9767c3acd390"
+  name = "github.com/nicklasos/golimit"
   packages = ["."]
   pruneopts = "UT"
-  revision = "5ab6158fbd4c84dc648a0c6f00de2741fa4ee017"
-  version = "0.0.3"
+  revision = "37e1f6a833632434be6eb2377168523e31077dde"
+  version = "0.0.1"
 
 [[projects]]
   branch = "master"
@@ -58,14 +58,6 @@
   pruneopts = "UT"
   revision = "f0c99a92ddcedd3964a269d23c8e89d9a9229be6"
 
-[[projects]]
-  branch = "master"
-  digest = "1:9fdc2b55e8e0fafe4b41884091e51e77344f7dc511c5acedcfd98200003bff90"
-  name = "golang.org/x/time"
-  packages = ["rate"]
-  pruneopts = "UT"
-  revision = "9d24e82272b4f38b78bc8cff74fa936d31ccd8ef"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
@@ -73,7 +65,7 @@
     "github.com/go-redis/redis",
     "github.com/gorilla/websocket",
     "github.com/joho/godotenv",
-    "github.com/nicklasos/golimiter",
+    "github.com/nicklasos/golimit",
     "github.com/streadway/amqp",
     "github.com/tomasen/realip",
   ]

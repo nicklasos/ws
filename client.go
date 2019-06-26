@@ -7,18 +7,17 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/tomasen/realip"
-
 	"github.com/gorilla/websocket"
-	"github.com/nicklasos/golimiter"
+	"github.com/nicklasos/golimit"
+	"github.com/tomasen/realip"
 )
 
 var (
-	ipLimit = golimiter.NewLimiter(5, 5)
-	idLimit = golimiter.NewLimiter(2, 3)
+	ipLimit = golimit.NewLimiter(1*time.Minute, 40)
+	idLimit = golimit.NewLimiter(1*time.Minute, 30)
 
-	banIpTime = 30 * time.Minute
-	banIdTime = 20 * time.Minute
+	banIpTime = 40 * time.Minute
+	banIdTime = 30 * time.Minute
 )
 
 const (

@@ -7,8 +7,8 @@
   version = "1.2.0"
 
 [[constraint]]
-  name = "github.com/nicklasos/golimiter"
-  version = "0.0.3"
+  name = "github.com/nicklasos/golimit"
+  version = "0.0.1"
 
 [[constraint]]
   name = "github.com/joho/godotenv"
