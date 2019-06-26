@@ -18,6 +18,7 @@ type Data struct {
 	Users15min  int         `json:"users_15min"`
 	Rooms       ListOfRooms `json:"rooms"`
 	Version     string      `json:"version"`
+	BannedUsers int         `json:"banned_users"`
 	UptimeFrom  string      `json:"uptime_from"`
 }
 
@@ -86,6 +87,7 @@ func getStats(hub *Hub) *Data {
 		min15,
 		listOfRooms,
 		version,
+		ipLimit.BannedCount() + idLimit.BannedCount(),
 		uptime.Format("2006-01-02 15:04:05"),
 	}
 }
