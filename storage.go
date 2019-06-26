@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -90,7 +89,6 @@ func setAdd(key string, value string) {
 }
 
 func setCount(key string) int64 {
-	fmt.Println(key)
 	res, err := redisClient.SCard(key).Result()
 	if err == redis.Nil {
 		return 0
